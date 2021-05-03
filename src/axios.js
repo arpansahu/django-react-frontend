@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseURL = 'https://react-materialui-backend.herokuapp.com//api/';
+const baseURL = 'https://react-materialui-backend.herokuapp.com/api/';
 
 const axiosInstance = axios.create({
 	baseURL: baseURL,
