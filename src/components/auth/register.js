@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, setState } from 'react';
 import axiosInstance from '../../axios';
 import { useHistory } from 'react-router-dom';
 //MaterialUI
@@ -15,6 +15,15 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import HeaderForGuest from '../headerforguest';
 import { ValidatorForm,TextValidator } from 'react-material-ui-form-validator';
+import VisibilityOffTwoToneIcon from "@material-ui/icons/VisibilityOffTwoTone";
+import VisibilityTwoToneIcon from "@material-ui/icons/VisibilityTwoTone";
+import InputAdornment from '@material-ui/core/InputAdornment';
+import Input from '@material-ui/core/Input';
+import Snackbar from "@material-ui/core/Snackbar";
+import SnackbarContent from "@material-ui/core/SnackbarContent";
+import IconButton from "@material-ui/core/IconButton";
+import ErrorIcon from "@material-ui/icons/Error";
+import CloseIcon from "@material-ui/icons/Close";
 
 const useStyles = makeStyles((theme) => ({
 	paper: {
@@ -34,6 +43,11 @@ const useStyles = makeStyles((theme) => ({
 	submit: {
 		margin: theme.spacing(3, 0, 2),
 	},
+	passwordEye: {
+		color: "rgba(131,153,167,0.9)",
+		opacity: 0.7
+	},
+
 }));
 
 export default function SignUp() {
@@ -42,6 +56,7 @@ export default function SignUp() {
 		email: '',
 		username: '',
 		password: '',
+		password_two: '',
 	});
 
 	const [formData, updateFormData] = useState(initialFormData);
@@ -53,12 +68,19 @@ export default function SignUp() {
 			[e.target.name]: e.target.value.trim(),
 		});
 	};
+	const [passwordsMatch, updatePasswordsMatch] = useState({errorOpen: false,error: ""});
+
+	const errorClose = e => {
+		updatePasswordsMatch({errorOpen: false,error: ""});
+	};
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		console.log(formData);
-
-		axiosInstance
+		// console.log(formData);
+		if (formData.password_two == formData.password){
+			console.log("true")
+			updatePasswordsMatch({errorOpen: false,error: ""});
+			axiosInstance
 			.post(`user/create/`, {
 				email: formData.email,
 				user_name: formData.username,
@@ -69,8 +91,30 @@ export default function SignUp() {
 				console.log(res);
 				console.log(res.data);
 			});
+		}
+		else{
+			console.log("false")
+			updatePasswordsMatch({errorOpen: true,error: "Passwords don't match"});
+			// document.getElementById("invalid user").innerHTML = 'Both passwords are not same';
+		}
+		
 	};
 
+	const [hidePassword, setHidePassword] = useState(true);
+	const showPassword = () => {
+		// console.log("show passsword", + hidePassword)
+		setHidePassword(!hidePassword );
+		// console.log("After show passsword", + hidePassword)
+	};
+
+	const [hidePassword_two, setHidePassword_Two] = useState(true);
+	const showPassword_two = () => {
+		// console.log("show passsword", + hidePassword_two)
+		setHidePassword_Two(!hidePassword_two );
+		// console.log("After show passsword", + hidePassword_two)
+	};
+
+	
 	const classes = useStyles();
 
 	return (
@@ -149,27 +193,170 @@ export default function SignUp() {
 								onChange={handleChange}
 							/> */}
 							<TextValidator
+								type={hidePassword ? "password" : "input"}
+								InputProps={hidePassword ? { 
+									endAdornment: (
+										<InputAdornment position="end">
+										<VisibilityOffTwoToneIcon
+											fontSize="default"
+											className={classes.passwordEye}
+											onClick={showPassword}
+										/>
+										</InputAdornment>
+									)
+							  		} : {
+									endAdornment: (
+										<InputAdornment position="end">
+										<VisibilityTwoToneIcon
+											fontSize="default"
+											className={classes.passwordEye}
+											onClick={showPassword}
+										/>
+										</InputAdornment>
+									)
+									}
+							
+								}
 								variant="outlined"
 								required
 								fullWidth
 								name="password"
 								label="Password"
-								type="password"
 								id="password"
 								autoComplete="current-password"
 								onChange={handleChange}
 								value={formData.password}
-								validators={['required' ,'matchRegexp:^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,20})']}
+								validators={['required' ,'matchRegexp:^(?=.*[a-z])', 'matchRegexp:^(?=.*[a-z])(?=.*[A-Z])','matchRegexp:^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])',
+										'matchRegexp:^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])', 'matchRegexp:^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,20})'
+									]
+								}
 								errorMessages={['this field is required', 
-									`password length  should be 8-20 --
-									The password must contain at least 1 lowercase alphabetical character --
-									The password must contain at least 1 uppercase alphabetical character --
-									The password must contain at least 1 numeric character --
-									The string must contain at least one special character`
-							]
-						}
+									'The password must contain at least 1 lowercase alphabetical character' ,
+									'The password must contain at least 1 uppercase alphabetical character ',
+									'The password must contain at least 1 numeric character' ,
+									'The string must contain at least one special character`',
+									'password length  should be 8-20 ',
+									]
+								}	
+								
+							/>
+
+							{/* <Input
+								
+
+								id="password"
+								autoComplete="current-password"
+								className={classes.inputs}
+								disableUnderline={true}
+								onChange={handleChange}
+								type={hidePassword ? "password" : "input"}
+								endAdornment={
+									hidePassword ? (
+									<InputAdornment position="end">
+									<VisibilityOffTwoToneIcon
+										fontSize="default"
+										className={classes.passwordEye}
+										onClick={showPassword}
+									/>
+									</InputAdornment>
+								) : (
+									<InputAdornment position="end">
+									<VisibilityTwoToneIcon
+										fontSize="default"
+										className={classes.passwordEye}
+										onClick={showPassword}
+									/>
+									</InputAdornment>
+								)
+								}
+							/> */}
+						</Grid>
+						<Grid item xs={12}>
+						<TextValidator
+								type={hidePassword_two ? "password" : "input"}
+								InputProps={hidePassword_two ? { 
+									endAdornment: (
+										<InputAdornment position="end">
+										<VisibilityOffTwoToneIcon
+											fontSize="default"
+											className={classes.passwordEye}
+											onClick={showPassword_two}
+										/>
+										</InputAdornment>
+									)
+							  		} : {
+									endAdornment: (
+										<InputAdornment position="end">
+										<VisibilityTwoToneIcon
+											fontSize="default"
+											className={classes.passwordEye}
+											onClick={showPassword}
+										/>
+										</InputAdornment>
+									)
+									}
+							
+								}
+								variant="outlined"
+								required
+								fullWidth
+								marginTop="10"
+								name="password_two"
+								label="Confirm Password"
+								id="password_two"
+								autoComplete="current-password"
+								onChange={handleChange}
+								value={formData.password_two}
+								validators={['required' ,'matchRegexp:^(?=.*[a-z])', 'matchRegexp:^(?=.*[a-z])(?=.*[A-Z])','matchRegexp:^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])',
+										'matchRegexp:^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])', 'matchRegexp:^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,20})'
+									]
+								}
+								errorMessages={['this field is required', 
+									'The password must contain at least 1 lowercase alphabetical character' ,
+									'The password must contain at least 1 uppercase alphabetical character ',
+									'The password must contain at least 1 numeric character' ,
+									'The string must contain at least one special character`',
+									'password length  should be 8-20 ',
+									]
+								}	
+								
 							/>
 						</Grid>
+						{/* <h4 id="invalid user" style={{color:'red', alignContent:"centre", width:"auto", margin:"auto"}}></h4> */}
+						{passwordsMatch.error ? (
+							<Snackbar
+							variant="error"
+							key={passwordsMatch.error}
+							anchorOrigin={{
+								vertical: "bottom",
+								horizontal: "center"
+							}}
+							open={passwordsMatch.errorOpen}
+							onClose={errorClose}
+							autoHideDuration={3000}
+							>
+							<SnackbarContent
+								className={classes.error}
+								message={
+								<div>
+									<span style={{ marginRight: "8px" }}>
+									<ErrorIcon fontSize="large" color="error" />
+									</span>
+									<span> {passwordsMatch.error} </span>
+								</div>
+								}
+								action={[
+								<IconButton
+									key="close"
+									aria-label="close"
+									onClick={errorClose}
+								>
+									<CloseIcon color="error" />
+								</IconButton>
+								]}
+							/>
+							</Snackbar>
+						) : null}
 						<Grid item xs={12}>
 							<FormControlLabel
 								control={<Checkbox value="allowExtraEmails" color="primary" />}
@@ -177,6 +364,7 @@ export default function SignUp() {
 							/>
 						</Grid>
 					</Grid>
+					
 					<Button
 						type="submit"
 						fullWidth
