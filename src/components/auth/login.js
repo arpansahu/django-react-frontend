@@ -36,8 +36,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function SignIn() {
-	
 	const history = useHistory();
+	
+	if (localStorage.getItem('access_token')){
+		history.push('/');
+	}
+	
 	const initialFormData = Object.freeze({
 		email: '',
 		password: '',
@@ -69,8 +73,13 @@ export default function SignIn() {
 				localStorage.setItem('refresh_token', res.data.refresh);
 				axiosInstance.defaults.headers['Authorization'] =
 					'JWT ' + localStorage.getItem('access_token');
-				// console.log(res);
-				// console.log(res.data);
+				console.log("RESULT :  "+typeof(res));
+				console.log("RESULT DATA : "+res.data.access);
+				if (res.data.access){
+					window.location.reload();
+				}
+				console.log(JSON.stringify(res))
+				// if(res == [object Object]'')
 				history.push('/');
 				
 			});
