@@ -37,17 +37,12 @@ const useStyles = makeStyles((theme) => ({
 		flexGrow: 1,
 	},
 	back: {
-		// borderBottom: `px solid ${theme.palette.divider}`,
-		// fill: 'blue',
+
 		alignSelf: 'center',
-		marginLeft: 20,
-		marginRight: 20,
 		color: "primary",
-    // display: PowerInputOutlined,
-    // font-size: 1.5rem;
-    // transition: fill 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
-    // flex-shrink: 0;
-    // user-select: none;
+		marginBlockStart: 0,
+		marginBlockEnd: 0,
+		
 	},
 }));
 
@@ -152,7 +147,8 @@ function Header() {
 						</Link> */}
 					</Typography>
 					<Button
-						
+						marginLeft="auto"
+						marginRight="auto"
 						// variant="outlined"
 						className={classes.back}
 						// component={NavLink}

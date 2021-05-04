@@ -85,9 +85,9 @@ export default function SignIn() {
 			})
 			.catch(function (error) {
 				if (error.response) {
-				  console.log(error.response.data);
-				  console.log(error.response.status);
-				  console.log(error.response.headers);
+				//   console.log(error.response.data);
+				//   console.log(error.response.status);
+				//   console.log(error.response.headers);
 
 				  if (error.response.status == 401){
 					document.getElementById("invalid user").innerHTML = 'No active account found with the given credentials';
