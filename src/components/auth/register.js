@@ -14,6 +14,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import HeaderForGuest from '../headerforguest';
+import { ValidatorForm,TextValidator } from 'react-material-ui-form-validator';
 
 const useStyles = makeStyles((theme) => ({
 	paper: {
@@ -82,10 +83,10 @@ export default function SignUp() {
 				<Typography component="h1" variant="h5">
 					Sign up
 				</Typography>
-				<form className={classes.form} noValidate>
+				<ValidatorForm className={classes.form} noValidate>
 					<Grid container spacing={2}>
 						<Grid item xs={12}>
-							<TextField
+							{/* <TextField
 								variant="outlined"
 								required
 								fullWidth
@@ -94,10 +95,24 @@ export default function SignUp() {
 								name="email"
 								autoComplete="email"
 								onChange={handleChange}
+							/> */}
+							<TextValidator
+								variant="outlined"
+								required
+								fullWidth
+								id="email"
+								label="Email Address"
+								name="email"
+								autoComplete="email"
+								label="Email"
+								onChange={handleChange}
+								value={formData.email}
+								validators={['required', 'isEmail']}
+								errorMessages={['this field is required', 'email is not valid']}
 							/>
 						</Grid>
 						<Grid item xs={12}>
-							<TextField
+							{/* <TextField
 								variant="outlined"
 								required
 								fullWidth
@@ -106,10 +121,23 @@ export default function SignUp() {
 								name="username"
 								autoComplete="username"
 								onChange={handleChange}
+							/> */}
+							<TextValidator
+								variant="outlined"
+								required
+								fullWidth
+								id="username"
+								label="Username"
+								name="username"
+								value={formData.username}
+								autoComplete="username"
+								onChange={handleChange}
+								validators={['empty' ]}
+								errorMessages={['this field is required']}
 							/>
 						</Grid>
 						<Grid item xs={12}>
-							<TextField
+							{/* <TextField
 								variant="outlined"
 								required
 								fullWidth
@@ -119,6 +147,27 @@ export default function SignUp() {
 								id="password"
 								autoComplete="current-password"
 								onChange={handleChange}
+							/> */}
+							<TextValidator
+								variant="outlined"
+								required
+								fullWidth
+								name="password"
+								label="Password"
+								type="password"
+								id="password"
+								autoComplete="current-password"
+								onChange={handleChange}
+								value={formData.password}
+								validators={['required' ,'matchRegexp:^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,20})']}
+								errorMessages={['this field is required', 
+									`password length  should be 8-20 --
+									The password must contain at least 1 lowercase alphabetical character --
+									The password must contain at least 1 uppercase alphabetical character --
+									The password must contain at least 1 numeric character --
+									The string must contain at least one special character`
+							]
+						}
 							/>
 						</Grid>
 						<Grid item xs={12}>
@@ -145,7 +194,7 @@ export default function SignUp() {
 							</Link>
 						</Grid>
 					</Grid>
-				</form>
+				</ValidatorForm>
 			</div>
 		</Container>
 		</div>

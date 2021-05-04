@@ -16,7 +16,7 @@ function App() {
 
 
 	useEffect(() => {
-		console.log("App.js")
+		// console.log("App.js")
 		axiosInstance.get().then((res) => {
 			const allPosts = res.data;
 			setAppState({ loading: false, posts: allPosts });
@@ -27,7 +27,7 @@ function App() {
 			console.log("Inside Error", err);
 			history.push('/login');
 		})
-		console.log((appState))
+		// console.log((appState))
 		;
 	}, [setAppState, localStorage.getItem('access_token')])
 

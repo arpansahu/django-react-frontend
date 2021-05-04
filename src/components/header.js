@@ -4,7 +4,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { makeStyles, withTheme } from '@material-ui/core/styles';
-import { NavLink } from 'react-router-dom';
+import { link, NavLink } from 'react-router-dom';
 import Link from '@material-ui/core/Link';
 import Button from '@material-ui/core/Button';
 import logo from '../logo.png'
@@ -13,6 +13,8 @@ import { useHistory } from 'react-router-dom';
 import axiosInstance from '../axios';
 import jwt_decode from "jwt-decode";
 import { Subtitles } from '@material-ui/icons';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+
 
 const useStyles = makeStyles((theme) => ({
 	appBar: {
@@ -34,7 +36,19 @@ const useStyles = makeStyles((theme) => ({
 		borderRadius: 10,
 		flexGrow: 1,
 	},
-	
+	back: {
+		// borderBottom: `px solid ${theme.palette.divider}`,
+		// fill: 'blue',
+		alignSelf: 'center',
+		marginLeft: 20,
+		marginRight: 20,
+		color: "primary",
+    // display: PowerInputOutlined,
+    // font-size: 1.5rem;
+    // transition: fill 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    // flex-shrink: 0;
+    // user-select: none;
+	},
 }));
 
 function Header() {
@@ -42,13 +56,13 @@ function Header() {
 
 	let token_var =localStorage.getItem('access_token');
 	let user_obj = {}
-	console.log(token_var)
+	// console.log(token_var)
 	if(token_var){
-		console.log("IF")
+		// console.log("IF")
 		user_obj = jwt_decode(localStorage.getItem('access_token'));
 	}
 	else{
-		console.log("ELSE")
+		// console.log("ELSE")
 		user_obj = {
 			is_superuser: false,
 			username: null,
@@ -85,7 +99,7 @@ function Header() {
 			)
 		}, [path, localStorage.getItem('access_token')]
 	)
-	console.log(appState['user_data'].is_superuser, path);		
+	// console.log(appState['user_data'].is_superuser, path);		
 	
 
 	const classes = useStyles();
@@ -101,6 +115,9 @@ function Header() {
 		window.location.reload();
 	};
 
+	const goBack = () => {
+		history.goBack()
+	}
 
 	return (
 		<React.Fragment>
@@ -134,6 +151,16 @@ function Header() {
 							Blog and Blob
 						</Link> */}
 					</Typography>
+					<Button
+						
+						// variant="outlined"
+						className={classes.back}
+						// component={NavLink}
+					>
+						<h1 className={classes.back}onClick={goBack}> 
+							<ArrowBackIcon />
+						</h1>
+					</Button>
 					{appState['token'] && <SearchBar
 						value={data.search}
 						onChange={(newValue) => setData({ search: newValue })}
@@ -175,6 +202,9 @@ function Header() {
 				</Toolbar>
 				{/* {appState['user_data'].username} */}
 			</AppBar>
+
+			
+						
 		</React.Fragment>
 	);
 }

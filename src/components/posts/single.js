@@ -6,6 +6,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
+import Header from '../header';
 
 const useStyles = makeStyles((theme) => ({
 	paper: {
@@ -29,35 +30,42 @@ export default function Post() {
 			setData({
 				posts: res.data,
 			});
-			console.log(res.data);
+			// console.log(res.data);
 		});
 	}, [setData]);
 
 	return (
-		<Container component="main" maxWidth="md">
-			<CssBaseline />
-			<div className={classes.paper}> </div>{' '}
-			<div className={classes.heroContent}>
-				<Container maxWidth="sm">
-					<Typography
-						component="h1"
-						variant="h2"
-						align="center"
-						color="textPrimary"
-						gutterBottom
-					>
-						{data.posts.title}{' '}
-					</Typography>{' '}
-					<Typography
-						variant="h5"
-						align="center"
-						color="textSecondary"
-						paragraph
-					>
-						{data.posts.excerpt}{' '}
-					</Typography>{' '}
-				</Container>{' '}
-			</div>{' '}
-		</Container>
+		<div className="App">
+			<Header />
+			<h1>Latest Posts</h1>
+			<React.Fragment>
+			<Container component="main" maxWidth="md">
+				<CssBaseline />
+				<div className={classes.paper}> </div>{' '}
+					<div className={classes.heroContent}>
+						<Container maxWidth="sm">
+							<Typography
+								component="h1"
+								variant="h2"
+								align="center"
+								color="textPrimary"
+								gutterBottom
+							>
+								{data.posts.title}{' '}
+							</Typography>{' '}
+							<Typography
+								variant="h5"
+								align="center"
+								color="textSecondary"
+								paragraph
+							>
+								{data.posts.excerpt}{' '}
+							</Typography>{' '}
+						</Container>{' '}
+					</div>{' '}
+				</Container>
+			</React.Fragment>
+
+		</div>
 	);
 }

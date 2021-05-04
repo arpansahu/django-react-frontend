@@ -66,7 +66,7 @@ const Posts = (props) => {
 							<TableBody>
 								{posts.map((post) => {
 									return (
-										<TableRow>
+										<TableRow key={post.id}>
 											<TableCell component="th" scope="row">
 												{post.id}
 											</TableCell>

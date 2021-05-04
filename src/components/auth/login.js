@@ -73,16 +73,27 @@ export default function SignIn() {
 				localStorage.setItem('refresh_token', res.data.refresh);
 				axiosInstance.defaults.headers['Authorization'] =
 					'JWT ' + localStorage.getItem('access_token');
-				console.log("RESULT :  "+typeof(res));
-				console.log("RESULT DATA : "+res.data.access);
+				// console.log("RESULT :  "+typeof(res));
+				// console.log("RESULT DATA : "+res.data.access);
 				if (res.data.access){
 					window.location.reload();
 				}
-				console.log(JSON.stringify(res))
+				// console.log(JSON.stringify(res))
 				// if(res == [object Object]'')
 				history.push('/');
-				
-			});
+				console.log(res)
+			})
+			.catch(function (error) {
+				if (error.response) {
+				  console.log(error.response.data);
+				  console.log(error.response.status);
+				  console.log(error.response.headers);
+
+				  if (error.response.status == 401){
+					document.getElementById("invalid user").innerHTML = 'No active account found with the given credentials';
+				  }
+				}
+			} );
 	};
 
 
@@ -131,6 +142,7 @@ export default function SignIn() {
 						control={<Checkbox value="remember" color="primary" />}
 						label="Remember me"
 					/>
+					<h4 id="invalid user" style={{color:'red'}}></h4>
 					<Button
 						type="submit"
 						fullWidth
