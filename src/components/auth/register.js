@@ -73,12 +73,42 @@ export default function SignUp() {
 	const errorClose = e => {
 		updatePasswordsMatch({errorOpen: false,error: ""});
 	};
+	// useEffect(() => {
+	// 	const strongRegex = new RegExp("^(?=.[a-z])(?=.[A-Z])(?=.[0-9])(?=.[!@#\$%\^&\*])(?=.{8,})");
+	// 	ValidatorForm.addValidationRule('isPassword', (value) => {
+	// 	  if (strongRegex.test(value)) {
+	// 		  if(username !== "")
+	// 		  {updateAcButton(false);}
+	// 		  return true;
+	// 	  }
+	// 	  updateAcButton(true);
+	// 	  return false;
+	//   });
+	
+	//   if(username!=="")
+	//   {
+	// 	if (strongRegex.test(pwd)) {
+	// 	  updateAcButton(false);
+	// 	}
+	// 	else
+	// 	updateAcButton(true);
+	//   }
+	//   else
+	// 	updateAcButton(true);
+			  
+	
+	//   });
 
+	const strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,20})");
+	const emailRegex = new RegExp("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)");
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		// console.log(formData);
-		
-		if(formData.email == null || formData.username == null || formData.password == null || formData.password_two == null){
+
+		if(formData.email == null || formData.username == null || formData.password == null || formData.password_two == null ||
+			!strongRegex.test(formData.password) || strongRegex.test(formData.password_two) || !emailRegex.test(formData.email)
+
+			){
 			updatePasswordsMatch({errorOpen: true,error: "Your Input Details are incorect"});
 		}
 		else if(formData.password == formData.password_two)
