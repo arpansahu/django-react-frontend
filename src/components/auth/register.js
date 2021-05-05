@@ -112,7 +112,7 @@ export default function SignUp() {
 				}
 			} );
 		}
-		else{
+		else if(formData.password != formData.password_two){
 			updatePasswordsMatch({errorOpen: true,error: "Both passwords should be same"});
 		}
 	};
