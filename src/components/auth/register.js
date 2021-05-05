@@ -77,8 +77,12 @@ export default function SignUp() {
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		// console.log(formData);
-		if (formData.password_two == formData.password){
-			console.log("true")
+		
+		if(formData.email == null || formData.username == null || formData.password == null || formData.password_two == null){
+			updatePasswordsMatch({errorOpen: true,error: "Your Input Details are incorect"});
+		}
+		else if(formData.password == formData.password_two)
+		{
 			updatePasswordsMatch({errorOpen: false,error: ""});
 			axiosInstance
 			.post(`user/create/`, {
@@ -88,16 +92,29 @@ export default function SignUp() {
 			})
 			.then((res) => {
 				history.push('/login');
-				console.log(res);
-				console.log(res.data);
-			});
+				// console.log(res);
+				// console.log(res.data);
+				// console.log(res.statusText)
+			})
+			.catch(function (error) {
+				if (error.response) {
+					// console.log(error.response.data);
+					// console.log(error.response.status);
+					// console.log(error.response.headers);
+				
+					if (error.response.status == 403){
+					updatePasswordsMatch({errorOpen: true,error: "User already Registered"});
+					// document.getElementById("invalid user").innerHTML = 'No active account found with the given credentials';
+					}
+					if(error.response.status == 400){
+					updatePasswordsMatch({errorOpen: true,error: "Your Input Details are incorect"});
+					}
+				}
+			} );
 		}
 		else{
-			console.log("false")
-			updatePasswordsMatch({errorOpen: true,error: "Passwords don't match"});
-			// document.getElementById("invalid user").innerHTML = 'Both passwords are not same';
+			updatePasswordsMatch({errorOpen: true,error: "Both passwords should be same"});
 		}
-		
 	};
 
 	const [hidePassword, setHidePassword] = useState(true);
@@ -370,6 +387,7 @@ export default function SignUp() {
 						fullWidth
 						variant="contained"
 						color="primary"
+						name="submit"
 						className={classes.submit}
 						onClick={handleSubmit}
 					>

@@ -81,7 +81,7 @@ export default function SignIn() {
 				// console.log(JSON.stringify(res))
 				// if(res == [object Object]'')
 				history.push('/');
-				console.log(res)
+				// console.log(res)
 			})
 			.catch(function (error) {
 				if (error.response) {

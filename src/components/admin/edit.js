@@ -49,7 +49,7 @@ export default function Create() {
 				['slug']: res.data.slug,
 				['content']: res.data.content,
 			});
-			console.log(res.data);
+			// console.log(res.data);
 		});
 	}, [updateFormData]);
 
@@ -63,7 +63,7 @@ export default function Create() {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		console.log(formData);
+		// console.log(formData);
 
 		axiosInstance.put(`admin/edit/` + id + '/', {
 			title: formData.title,

@@ -61,7 +61,7 @@ function HeaderWrapper() {
         
     useEffect(() => {
         setToken_var(localStorage.getItem('access_token'))
-        console.log(token_var);
+        // console.log(token_var);
         // refreshPage();
     },[]);
 
