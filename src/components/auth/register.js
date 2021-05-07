@@ -169,7 +169,7 @@ export default function SignUp() {
 			<HeaderForGuest />
 			<Container component="main" maxWidth="xs">
 			<CssBaseline />
-			<div className={classes.paper}>
+			<div className={classes.paper} style={{whiteSpace:"pre-line"}}>
 				<Avatar className={classes.avatar}></Avatar>
 				<Typography component="h1" variant="h5">
 					Sign up
@@ -273,16 +273,15 @@ export default function SignUp() {
 								autoComplete="current-password"
 								onChange={handleChange}
 								value={formData.password}
-								validators={['required' ,'matchRegexp:^(?=.*[a-z])', 'matchRegexp:^(?=.*[a-z])(?=.*[A-Z])','matchRegexp:^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])',
-										'matchRegexp:^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])', 'matchRegexp:^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,20})'
-									]
+								validators={['required' , 'matchRegexp:^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,20})']
 								}
-								errorMessages={['this field is required', 
-									'The password must contain at least 1 lowercase alphabetical character' ,
-									'The password must contain at least 1 uppercase alphabetical character ',
-									'The password must contain at least 1 numeric character' ,
-									'The string must contain at least one special character`',
-									'password length  should be 8-20 ',
+								errorMessages={[
+									'this field is required',
+									`The password must contain at least 1 lowercase alphabetical character
+									The password must contain at least 1 uppercase alphabetical character 
+									The password must contain at least 1 numeric character
+									The string must contain at least one special character
+									password length  should be 8-20` ,
 									]
 								}	
 								
@@ -354,18 +353,17 @@ export default function SignUp() {
 								autoComplete="current-password"
 								onChange={handleChange}
 								value={formData.password_two}
-								validators={['required' ,'matchRegexp:^(?=.*[a-z])', 'matchRegexp:^(?=.*[a-z])(?=.*[A-Z])','matchRegexp:^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])',
-										'matchRegexp:^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])', 'matchRegexp:^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,20})'
+								validators={['required' , 'matchRegexp:^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,20})']
+								}
+								errorMessages={[
+									'this field is required',
+									`The password must contain at least 1 lowercase alphabetical character
+									The password must contain at least 1 uppercase alphabetical character 
+									The password must contain at least 1 numeric character
+									The string must contain at least one special character
+									password length  should be 8-20` ,
 									]
 								}
-								errorMessages={['this field is required', 
-									'The password must contain at least 1 lowercase alphabetical character' ,
-									'The password must contain at least 1 uppercase alphabetical character ',
-									'The password must contain at least 1 numeric character' ,
-									'The string must contain at least one special character`',
-									'password length  should be 8-20 ',
-									]
-								}	
 								
 							/>
 						</Grid>
