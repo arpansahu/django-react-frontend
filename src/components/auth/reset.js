@@ -1,11 +1,9 @@
 import React, { useState, setState } from 'react';
 import axiosInstance from '../../axios';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 //MaterialUI
-import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
@@ -18,13 +16,12 @@ import { ValidatorForm,TextValidator } from 'react-material-ui-form-validator';
 import VisibilityOffTwoToneIcon from "@material-ui/icons/VisibilityOffTwoTone";
 import VisibilityTwoToneIcon from "@material-ui/icons/VisibilityTwoTone";
 import InputAdornment from '@material-ui/core/InputAdornment';
-import Input from '@material-ui/core/Input';
 import Snackbar from "@material-ui/core/Snackbar";
 import SnackbarContent from "@material-ui/core/SnackbarContent";
 import IconButton from "@material-ui/core/IconButton";
 import ErrorIcon from "@material-ui/icons/Error";
 import CloseIcon from "@material-ui/icons/Close";
-
+import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 const useStyles = makeStyles((theme) => ({
 	paper: {
 		marginTop: theme.spacing(8),
@@ -52,10 +49,9 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignUp() {
 	const history = useHistory();
-	
+	const {uidb64,token} = useParams();
+
 	const initialFormData = Object.freeze({
-		email: '',
-		username: '',
 		password: '',
 		password_two: '',
 	});
@@ -74,49 +70,41 @@ export default function SignUp() {
 	const errorClose = e => {
 		updatePasswordsMatch({errorOpen: false,error: ""});
 	};
-	
-			  
+	const [message, updateMessage] = useState({messageOpen: false, data :""})
 
 
+	const messageClose = e => {
+		updateMessage({messageOpen: false, data:""});
+	}
 	const strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,20})");
-	const emailRegex = new RegExp("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)");
+	
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		// console.log(formData);
 
-		if(formData.email == null || formData.username == null || formData.password == null || formData.password_two == null ||
-			!strongRegex.test(formData.password) || !strongRegex.test(formData.password_two) || !emailRegex.test(formData.email)
-
-			){
-			updatePasswordsMatch({errorOpen: true,error: "Your Input Details are incorect"});
-		}
-		else if(formData.password == formData.password_two)
+		if(formData.password == formData.password_two && strongRegex.test(formData.password) && strongRegex.test(formData.password_two))
 		{
 			updatePasswordsMatch({errorOpen: false,error: ""});
 			axiosInstance
-			.post(`user/create/`, {
-				email: formData.email,
-				username: formData.username,
-				password: formData.password,
+			.post(`user/account/resetpassword/`, {
+				uidb64: uidb64,
+				token:token,
+				password1: formData.password,
+				password2: formData.password_two
 			})
 			.then((res) => {
-				history.push('/login');
-				// console.log(res);
-				// console.log(res.data);
-				// console.log(res.statusText)
+				updateMessage({messageOpen:true, data:"Passsword reset Successfully"})
 			})
 			.catch(function (error) {
 				if (error.response) {
 					// console.log(error.response.data);
 					// console.log(error.response.status);
 					// console.log(error.response.headers);
-				
-					if (error.response.status == 403){
-					updatePasswordsMatch({errorOpen: true,error: "User already Registered"});
-					// document.getElementById("invalid user").innerHTML = 'No active account found with the given credentials';
-					}
 					if(error.response.status == 400){
-					updatePasswordsMatch({errorOpen: true,error: "Your Input Details are incorect"});
+					updatePasswordsMatch({errorOpen: true,error: "Resent link expired or already used"});
+					}
+					if(error.response.status == 206){
+						updatePasswordsMatch({errorOpen: true,error: "Password do not match"});
 					}
 				}
 			} );
@@ -149,63 +137,12 @@ export default function SignUp() {
 			<Container component="main" maxWidth="xs">
 			<CssBaseline />
 			<div className={classes.paper} style={{whiteSpace:"pre-line"}}>
-				<Avatar className={classes.avatar}></Avatar>
 				<Typography component="h1" variant="h5">
-					Sign up
+					Reset Password
 				</Typography>
 				<ValidatorForm className={classes.form} noValidate>
 					<Grid container spacing={2}>
-						<Grid item xs={12}>
-							{/* <TextField
-								variant="outlined"
-								required
-								fullWidth
-								id="email"
-								label="Email Address"
-								name="email"
-								autoComplete="email"
-								onChange={handleChange}
-							/> */}
-							<TextValidator
-								variant="outlined"
-								required
-								fullWidth
-								id="email"
-								label="Email Address"
-								name="email"
-								autoComplete="email"
-								label="Email"
-								onChange={handleChange}
-								value={formData.email}
-								validators={['required', 'isEmail']}
-								errorMessages={['this field is required', 'email is not valid']}
-							/>
-						</Grid>
-						<Grid item xs={12}>
-							{/* <TextField
-								variant="outlined"
-								required
-								fullWidth
-								id="username"
-								label="Username"
-								name="username"
-								autoComplete="username"
-								onChange={handleChange}
-							/> */}
-							<TextValidator
-								variant="outlined"
-								required
-								fullWidth
-								id="username"
-								label="Username"
-								name="username"
-								value={formData.username}
-								autoComplete="username"
-								onChange={handleChange}
-								validators={['empty' ]}
-								errorMessages={['this field is required']}
-							/>
-						</Grid>
+						
 						<Grid item xs={12}>
 							{/* <TextField
 								variant="outlined"
@@ -266,35 +203,7 @@ export default function SignUp() {
 								
 							/>
 
-							{/* <Input
-								
-
-								id="password"
-								autoComplete="current-password"
-								className={classes.inputs}
-								disableUnderline={true}
-								onChange={handleChange}
-								type={hidePassword ? "password" : "input"}
-								endAdornment={
-									hidePassword ? (
-									<InputAdornment position="end">
-									<VisibilityOffTwoToneIcon
-										fontSize="default"
-										className={classes.passwordEye}
-										onClick={showPassword}
-									/>
-									</InputAdornment>
-								) : (
-									<InputAdornment position="end">
-									<VisibilityTwoToneIcon
-										fontSize="default"
-										className={classes.passwordEye}
-										onClick={showPassword}
-									/>
-									</InputAdornment>
-								)
-								}
-							/> */}
+							
 						</Grid>
 						<Grid item xs={12}>
 						<TextValidator
@@ -346,7 +255,7 @@ export default function SignUp() {
 								
 							/>
 						</Grid>
-						{/* <h4 id="invalid user" style={{color:'red', alignContent:"centre", width:"auto", margin:"auto"}}></h4> */}
+						
 						{passwordsMatch.error ? (
 							<Snackbar
 							variant="error"
@@ -381,12 +290,41 @@ export default function SignUp() {
 							/>
 							</Snackbar>
 						) : null}
-						<Grid item xs={12}>
-							<FormControlLabel
-								control={<Checkbox value="allowExtraEmails" color="primary" />}
-								label="I want to receive inspiration, marketing promotions and updates via email."
-							/>
-						</Grid>
+											{message.data ? (
+						<Snackbar
+						variant="success"
+						severity="success"
+						key={message.data}
+						anchorOrigin={{
+							vertical: "bottom",
+							horizontal: "center"
+						}}
+						open={message.messageOpen}
+						onClose={messageClose}
+						autoHideDuration={3000}
+						>
+						<SnackbarContent
+							className={classes.success}
+							message={
+							<div style={{color:"green"}}>
+								<span style={{ marginRight: "8px" }}>
+								<CheckCircleOutlineIcon fontSize="large"   />
+								</span >
+								<span> {message.data} </span>
+							</div>
+							}
+							action={[
+							<IconButton
+								key="close"
+								aria-label="close"
+								onClick={messageClose}
+							>
+								<CloseIcon style={{color:"green"}} />
+							</IconButton>
+							]}
+						/>
+						</Snackbar>
+					) : null}
 					</Grid>
 					
 					<Button
@@ -398,15 +336,9 @@ export default function SignUp() {
 						className={classes.submit}
 						onClick={handleSubmit}
 					>
-						Sign Up
+						Reset Password
 					</Button>
-					<Grid container justify="flex-end">
-						<Grid item>
-							<Link href="/login" variant="body2">
-								Already have an account? Sign in
-							</Link>
-						</Grid>
-					</Grid>
+					
 				</ValidatorForm>
 			</div>
 		</Container>

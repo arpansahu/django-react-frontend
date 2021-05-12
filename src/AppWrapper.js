@@ -16,14 +16,18 @@ import Testing from './components/testing';
 import jwt_decode from "jwt-decode";
 import axiosInstance from './axios';
 import HeaderWrapper from './components/headerwrapper';
-
-
+import Account from './components/auth/account';
+import PasswordReset from './components/auth/passwordupdate';
+import Activate from './components/auth/activate';
+import NotActivated from './components/auth/notactivated';
+import ForgetPassword from './components/auth/forgetpassword';
+import Reset from './components/auth/reset';
 
 function AppWrapper() {
     // console.log("appwrapper");
     const history = useHistory();
     const [token_var, setToken_var] = useState(localStorage.getItem('access_token'));
-   
+    
 
 
     useEffect(() => {
@@ -60,6 +64,12 @@ function AppWrapper() {
 				<ProtectedRoute path="/post/:slug" component={Single} />
 				<ProtectedRoute path="/search" component={Search} />
                 <ProtectedRoute path="/testing" component={Testing} />
+                <ProtectedRoute exact path="/account" component={Account} />
+                <ProtectedRoute exact path="/account/passwordupdate" component={PasswordReset} />
+                <Route exact path="/activate/:uidb64/:token" component={Activate}/>
+                <ProtectedRoute exact path="/unverified" component={NotActivated}/>
+                <Route exact path ="/forget-password" component={ForgetPassword}/>
+                <Route exact path="/reset/:uidb64/:token" component={Reset}/>
 			</Switch>
 			<Footer />
 		</React.StrictMode>

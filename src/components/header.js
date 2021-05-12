@@ -11,8 +11,6 @@ import logo from '../logo.png'
 import SearchBar from 'material-ui-search-bar';
 import { useHistory } from 'react-router-dom';
 import axiosInstance from '../axios';
-import jwt_decode from "jwt-decode";
-import { Subtitles } from '@material-ui/icons';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 
@@ -51,16 +49,41 @@ function Header() {
 
 	let token_var =localStorage.getItem('access_token');
 	let user_obj = {}
-	// console.log(token_var)
+	
 	if(token_var){
 		// console.log("IF")
-		user_obj = jwt_decode(localStorage.getItem('access_token'));
+		axiosInstance.get('user/account/')
+		.then((res) => {
+			const account = res.data;
+			console.log(account)
+			user_obj = {
+				is_superuser: account.is_staff,
+				username: account.username,
+				email: account.email,
+				id: account.id,
+				is_active:account.is_active,
+				is_email_verified: account.is_email_verified
+			}
+			if(!account.is_email_verified)
+			{
+				history.push('/unverified')
+			}
+		})
+		.catch(err => {
+			console.log("Inside Error", err);
+		})
+		
+		;
 	}
 	else{
 		// console.log("ELSE")
 		user_obj = {
 			is_superuser: false,
 			username: null,
+			email:null,
+			id: null,
+			is_active:false,
+			is_email_verified: false
 		}
 	}
 	const[appState, setsppState] = useState(
@@ -86,12 +109,37 @@ function Header() {
 	const path = useReactPath();
 	useEffect(
 		()=>{
-			setsppState(
-				{	
-				token:localStorage.getItem('access_token'), 
-				user_data : jwt_decode(localStorage.getItem('access_token'))
-			}
-			)
+			axiosInstance.get('user/account/')
+				.then((res) => {
+					const account = res.data;
+					// console.log(account)
+					user_obj = {
+						is_superuser: account.is_staff,
+						username: account.username,
+						email: account.email,
+						id: account.id,
+						is_active: account.is_active,
+						is_email_verified: account.is_email_verified
+					}
+
+					setsppState(
+						{	
+						token:localStorage.getItem('access_token'), 
+						user_data : user_obj
+					}
+					)
+					if(!account.is_email_verified)
+					{
+						history.push('/unverified')
+					}
+				})
+				.catch(err => {
+					console.log("Inside Error", err);
+				});
+				// if(!user_obj.is_active){
+				// 	history.push('/logout')
+				// }
+				// console.log(user_obj.is_active);
 		}, [path, localStorage.getItem('access_token')]
 	)
 	// console.log(appState['user_data'].is_superuser, path);		
@@ -113,6 +161,8 @@ function Header() {
 	const goBack = () => {
 		history.goBack()
 	}
+
+	
 
 	return (
 		<React.Fragment>
@@ -184,6 +234,16 @@ function Header() {
 						Admin Panel
 					</Button> )
 					}
+					<Button
+						href="#"
+						color="primary"
+						variant="outlined"
+						className={classes.link}
+						component={NavLink}
+						to={"/account/"}
+					>
+						My Account
+					</Button>
 					<Button
 						href="#"
 						color="primary"

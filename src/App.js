@@ -5,6 +5,8 @@ import PostLoadingComponent from './components/posts/postLoading';
 import axiosInstance from './axios';
 import { useHistory } from 'react-router';
 import Header from './components/header';
+import ErrorBoundary from './components/ErrorBoundary';
+
 function App() {
 	const history = useHistory();
 	const PostLoading = PostLoadingComponent(Posts);
@@ -25,7 +27,8 @@ function App() {
 		.catch(err => {
 			// what now?
 			console.log("Inside Error", err);
-			history.push('/login');
+			window.location.reload();
+			// history.push('/login');
 		})
 		// console.log((appState))
 		;
@@ -34,7 +37,10 @@ function App() {
 
 	return (
 		<div className="App">
-			<Header />
+			<ErrorBoundary>
+				<Header />
+			</ErrorBoundary>
+
 			<h1>Latest Posts</h1>
 			<PostLoading isLoading={appState.loading} posts={appState.posts} />
 		</div>

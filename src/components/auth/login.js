@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import axiosInstance from '../../axios';
+import axiosInstance from '../../axios/login';
+import FbLogin from 'react-facebook-login';
+import FacebookLogin from '../../axios/facebookLogin';
 import { useHistory, Link } from 'react-router-dom';
 //MaterialUI
 import Avatar from '@material-ui/core/Avatar';
@@ -39,6 +41,7 @@ export default function SignIn() {
 	const history = useHistory();
 	
 	if (localStorage.getItem('access_token')){
+		window.location.reload();
 		history.push('/');
 	}
 	
@@ -63,44 +66,50 @@ export default function SignIn() {
 		e.preventDefault();
 		// console.log(formData);
 
-		axiosInstance
-			.post(`token/`, {
-				email: formData.email,
-				password: formData.password,
-			})
-			.then((res) => {
-				localStorage.setItem('access_token', res.data.access);
-				localStorage.setItem('refresh_token', res.data.refresh);
-				axiosInstance.defaults.headers['Authorization'] =
-					'JWT ' + localStorage.getItem('access_token');
-				// console.log("RESULT :  "+typeof(res));
-				// console.log("RESULT DATA : "+res.data.access);
-				if (res.data.access){
-					window.location.reload();
-				}
-				// console.log(JSON.stringify(res))
-				// if(res == [object Object]'')
-				history.push('/');
-				// console.log(res)
-			})
-			.catch(function (error) {
-				if (error.response) {
-				//   console.log(error.response.data);
-				//   console.log(error.response.status);
-				//   console.log(error.response.headers);
+		
+	axiosInstance
+		.post(`auth/token/`, {
+			grant_type: 'password',
+			username: formData.email,
+			password: formData.password,
+			client_id: 'jq24l7DFApUddjOeiQo7cSn2EGZXCjtsw0l97pdj',
+			client_secret:
+				'sMvif7nDWYOzuy37wirIkAzejmiLKBCSBYANoA8nnvVrKcKWc7EkzUnYXdl2GzpkUblvbcPGhEHypg2jC04ClMZmyXsjUnCVIt1ppAdYRi2dBeE8IjADyOdPvas7BrGF',
+		})
+		.then((res) => {
+			localStorage.setItem('access_token', res.data.access_token);
+			localStorage.setItem('refresh_token', res.data.refresh_token);
+			console.log(res.data.access_token)
+			console.log(res.data.refresh_token)
+			axiosInstance.get('user/account/')
+				.then((res) => {
+					// console.log(account)
+					localStorage.setItem('account', res.data);
+				})
+			if (res.data.access){
+				window.location.reload();
+			}
+			history.push('/');
 
-				  if (error.response.status == 401){
-					document.getElementById("invalid user").innerHTML = 'No active account found with the given credentials';
-				  }
+		})
+		.catch(function (error) {
+			if (error.response) {
+			//   console.log(error.response.data);
+			//   console.log(error.response.status);
+			//   console.log(error.response.headers);
+
+				if (error.response.status == 401){
+				document.getElementById("invalid user").innerHTML = 'No active account found with the given credentials';
 				}
-			} );
+			}
+		} );
 	};
 
-
-	// useEffect(() => {
-        
-    // }, [handleSubmit]);
-
+	const responseFacebook = async (response) => {
+		// console.log(response);
+		FacebookLogin(response.accessToken);
+	};
+	
 	const classes = useStyles();
 
 	return (
@@ -113,6 +122,11 @@ export default function SignIn() {
 				<Typography component="h1" variant="h5">
 					Sign in
 				</Typography>
+				<FbLogin
+						appId="466557594456589"
+						fields="name,email,picture"
+						callback={responseFacebook}
+				/>
 				<form className={classes.form} noValidate>
 					<TextField
 						variant="outlined"
@@ -125,6 +139,7 @@ export default function SignIn() {
 						autoComplete="email"
 						autoFocus
 						onChange={handleChange}
+						
 					/>
 					<TextField
 						variant="outlined"
@@ -155,7 +170,7 @@ export default function SignIn() {
 					</Button>
 					<Grid container>
 						<Grid item xs>
-							<Link href="#" variant="body2">
+							<Link href="#" variant="body2" to='/forget-password'>
 								Forgot password?
 							</Link>
 						</Grid>

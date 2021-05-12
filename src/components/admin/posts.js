@@ -44,7 +44,17 @@ const useStyles = makeStyles((theme) => ({
 const Posts = (props) => {
 	const { posts } = props;
 	const classes = useStyles();
-	if (!posts || posts.length === 0) return <p>Can not find any posts, sorry</p>;
+	if (!posts || posts.length === 0) return <div>
+		<Header />
+		<p>Can not find any posts, sorry</p>
+		<Button
+			href={'/admin/create'}
+			variant="contained"
+			color="primary"
+		>
+			New Post
+		</Button>
+	</div>;
 	return (
 		<div className="App">
 			<Header />
