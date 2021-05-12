@@ -1,7 +1,12 @@
 import axios from 'axios';
 
+<<<<<<< HEAD
 // const baseURL = 'https://react-backend-social.herokuapp.com/api/';
 const baseURL = 'http://127.0.0.1:8000/api/';
+=======
+const baseURL = 'https://react-backend-social.herokuapp.com/api/';
+// const baseURL = 'http://127.0.0.1:8000/api/';
+>>>>>>> 739af3dc4e3c868dbe3ed3010c6aebd95fae2d9a
 
 const axiosInstance = axios.create(
 
