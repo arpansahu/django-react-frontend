@@ -2,7 +2,7 @@
 
 import HeaderForGuest from '../headerforguest';
 import React, { useState, useEffect } from 'react';
-import { link, NavLink, useParams } from 'react-router-dom';
+import { link, NavLink, useParams, useHistory } from 'react-router-dom';
 //MaterialUI
 
 import Button from '@material-ui/core/Button';
@@ -38,9 +38,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function FormPropsTextFields() {
+
 	const classes = useStyles();
 	const {uidb64,token} = useParams()
+	
 	const[message, setMessage] = useState('')
+	const history = useHistory();
 
 	console.log(uidb64, token)
 	axiosInstance
@@ -51,10 +54,14 @@ export default function FormPropsTextFields() {
 	.then((res) => {
 		console.log(res.data)
 		setMessage(res.data)
+		setTimeout(function(){ history.push('/logout'); }, 5000);
 	})
 	.catch(err => {
 		console.log("Inside Error", err);
 	});	
+
+	
+
   return (
 
         <div className="App">
@@ -63,17 +70,17 @@ export default function FormPropsTextFields() {
 			<CssBaseline />
 			<div className={classes.paper}  style={{whiteSpace:"pre-line"}}>
 				<h4 className={classes.h4}>{message}</h4>
-				<Button
+				{/* <Button
 					href="#"
 					color="primary"
 					variant="contained"
 					fullWidth
 					className={classes.submit}
 					component={NavLink}
-					to="/login"
+					to="/activate"
 				>
 					Login Here
-				</Button>
+				</Button> */}
 			</div>
 		</Container>
 		</div>

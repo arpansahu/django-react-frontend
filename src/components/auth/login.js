@@ -41,6 +41,7 @@ export default function SignIn() {
 	const history = useHistory();
 	
 	if (localStorage.getItem('access_token')){
+		
 		window.location.reload();
 		history.push('/');
 	}
