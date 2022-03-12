@@ -50,42 +50,42 @@ function Header() {
 	let token_var =localStorage.getItem('access_token');
 	let user_obj = {}
 	
-	if(token_var){
-		// console.log("IF")
-		axiosInstance.get('user/account/')
-		.then((res) => {
-			const account = res.data;
-			console.log(account)
-			user_obj = {
-				is_superuser: account.is_staff,
-				username: account.username,
-				email: account.email,
-				id: account.id,
-				is_active:account.is_active,
-				is_email_verified: account.is_email_verified
-			}
-			if(!account.is_email_verified)
-			{
-				history.push('/unverified')
-			}
-		})
-		.catch(err => {
-			console.log("Inside Error", err);
-		})
+	// if(token_var){
+	// 	// console.log("IF")
+	// 	axiosInstance.get('user/account/')
+	// 	.then((res) => {
+	// 		const account = res.data;
+	// 		console.log(account)
+	// 		user_obj = {
+	// 			is_superuser: account.is_staff,
+	// 			username: account.username,
+	// 			email: account.email,
+	// 			id: account.id,
+	// 			is_active:account.is_active,
+	// 			is_email_verified: account.is_email_verified
+	// 		}
+	// 		if(!account.is_email_verified)
+	// 		{
+	// 			history.push('/unverified')
+	// 		}
+	// 	})
+	// 	.catch(err => {
+	// 		console.log("Inside Error", err);
+	// 	})
 		
-		;
-	}
-	else{
-		// console.log("ELSE")
-		user_obj = {
-			is_superuser: false,
-			username: null,
-			email:null,
-			id: null,
-			is_active:false,
-			is_email_verified: false
-		}
-	}
+	// 	;
+	// }
+	// else{
+	// 	// console.log("ELSE")
+	// 	user_obj = {
+	// 		is_superuser: false,
+	// 		username: null,
+	// 		email:null,
+	// 		id: null,
+	// 		is_active:false,
+	// 		is_email_verified: false
+	// 	}
+	// }
 	const[appState, setsppState] = useState(
 			{	
 				token:token_var, 
