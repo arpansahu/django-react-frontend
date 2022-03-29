@@ -1,68 +1,107 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+# Django React Blog API
 
-In the project directory, you can run:
+This project is implementation for the following topics related to technologies used with React
 
-### `npm start`
+1. crud operations for Blog Model for admins
+2. used Material UI
+3. home page displays a list of existing blog
+4. Integrated with REST API using axios at end point: https://github.com/arpansahu/django-react-backend-with-social
+5. Forget Password and Social Login is also enabled
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+-Deployed on Heroku
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+1. Used Heroku for deployment
 
-### `npm test`
+## Tech Stack
+[![React JS](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactjs.org/)
+[![React Router](https://img.shields.io/badge/React_Router-CA4245?style=for-the-badge&logo=react-router&logoColor=white)](https://reactrouter.com/)
+[![Redux](https://img.shields.io/badge/Redux-593D88?style=for-the-badge&logo=redux&logoColor=white)](https://redux.js.org/)
+[![Heroku](https://img.shields.io/badge/Heroku-430098?style=for-the-badge&logo=heroku&logoColor=white)](https://www.heroku.com/)
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Demo
 
-### `npm run build`
+Backend Available at: https://github.com/arpansahu/django-react-backend-with-social
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+FrontEnd Available at: https://react-materialui-complete.herokuapp.com/
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+Note: Both the projects are running on Free dynos of Heroku so Please makesure before accessing Frontend Project
+awake the Backend by visiting the backend link
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
+admin login details:--
+email: admin@arpansahu.me
+password: showmecode
+## License
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+[MIT](https://choosealicense.com/licenses/mit/)
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## Installation
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### Install Node JS
+Refer to https://nodejs.org/en/ to install nodejs
 
-## Learn More
+### Install create-react-app
+Install create-react-app npm package globally. This will help to easily run the project and also build the source files easily. Use the following command to install create-react-app
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Cloning and Running the Application in local
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Clone the project into local
 
-### Code Splitting
+Install all the npm packages. Go into the project folder and type the following command to install all npm packages
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+```bash
+npm install
+```
 
-### Analyzing the Bundle Size
+In order to run the application Type the following command
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+```bash
+npm start
+```
 
-### Making a Progressive Web App
+The Application Runs on **localhost:3000**
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
 
-### Advanced Configuration
+## Deployment on Heroku
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
+Installing Heroku Cli from : https://devcenter.heroku.com/articles/heroku-cli
+Create your account in Heroku.
 
-### Deployment
+Inside your project directory
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
+Login Heroku CLI
+```bash
+  heroku login
 
-### `npm run build` fails to minify
+```
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+Create Heroku App
+
+```bash
+  heroku create [app_name]
+
+```
+
+Push Heroku App
+```
+    git push heroku master
+```
+
+Configure Heroku App
+```bash
+  add all the env variables using settings page on heroku app dashboard.
+
+```
+Configuring React App for Heroku
+```
+    npm run build
+```
+## Documentation
+
+[![React JS](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactjs.org/)
+[![React Router](https://img.shields.io/badge/React_Router-CA4245?style=for-the-badge&logo=react-router&logoColor=white)](https://reactrouter.com/)
+[![Redux](https://img.shields.io/badge/Redux-593D88?style=for-the-badge&logo=redux&logoColor=white)](https://redux.js.org/)
+[![Heroku](https://img.shields.io/badge/Heroku-430098?style=for-the-badge&logo=heroku&logoColor=white)](https://www.heroku.com/)
+
