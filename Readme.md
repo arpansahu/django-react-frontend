@@ -1,5 +1,5 @@
 
-# Django React Blog API
+# Altered Datum | React Blog App
 
 This project is implementation for the following topics related to technologies used with React
 
