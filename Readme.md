@@ -25,7 +25,7 @@ This project is implementation for the following topics related to technologies 
 
 ## Demo
 
-Backend Available at: https://github.com/arpansahu/django-react-backend-with-social
+Backend Available at: https://react-backend-social.herokuapp.com/
 
 FrontEnd Available at: https://react-materialui-complete.herokuapp.com/
 
