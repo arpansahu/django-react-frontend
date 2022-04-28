@@ -93,10 +93,9 @@ Push Heroku App
     git push heroku master
 ```
 
-Configure Heroku App
+Configure Heroku App Env Variables
 ```bash
-  add all the env variables using settings page on heroku app dashboard.
-
+ heroku config:set GITHUB_USERNAME=joesmith
 ```
 Configuring React App for Heroku
 ```
